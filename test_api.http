@@ -1,0 +1,216 @@
+########################
+### Test Base URL
+########################
+@baseUrl = http://localhost:5019
+@validUserId = 1
+@invalidUserId = 999
+
+########################
+### Test 1: GET all users (should succeed)
+########################
+GET http://localhost:5019/api/users
+Content-Type: application/json
+
+########################
+### Test 2: GET user by valid ID (should succeed)
+########################
+GET {{baseUrl}}/api/users/{{validUserId}}
+Content-Type: application/json
+
+########################
+### Test 3: GET user by invalid ID (should return 404)
+########################
+GET {{baseUrl}}/api/users/{{invalidUserId}}
+Content-Type: application/json
+
+########################
+### Test 4: GET user by negative ID (should return 400)
+########################
+GET {{baseUrl}}/api/users/-1
+Content-Type: application/json
+
+########################
+### Test 5: POST - Create valid user (should succeed with 201)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Alice",
+  "lastName": "Anderson",
+  "email": "alice.anderson@techhive.com",
+  "phoneNumber": "555-0104",
+  "department": "Finance"
+}
+
+########################
+### Test 6: POST - Missing FirstName (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "",
+  "lastName": "Brown",
+  "email": "charlie@techhive.com",
+  "phoneNumber": "555-0105",
+  "department": "Marketing"
+}
+
+########################
+### Test 7: POST - Missing LastName (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "David",
+  "lastName": "",
+  "email": "david@techhive.com",
+  "phoneNumber": "555-0106",
+  "department": "Sales"
+}
+
+########################
+### Test 8: POST - Invalid Email Format (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Emma",
+  "lastName": "Evans",
+  "email": "invalid-email",
+  "phoneNumber": "555-0107",
+  "department": "HR"
+}
+
+########################
+### Test 9: POST - Missing Email (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Frank",
+  "lastName": "Foster",
+  "email": "",
+  "phoneNumber": "555-0108",
+  "department": "Engineering"
+}
+
+########################
+### Test 10: POST - Invalid Phone Format (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Grace",
+  "lastName": "Green",
+  "email": "grace@techhive.com",
+  "phoneNumber": "invalid",
+  "department": "Operations"
+}
+
+########################
+### Test 11: POST - Missing Department (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Henry",
+  "lastName": "Harris",
+  "email": "henry@techhive.com",
+  "phoneNumber": "555-0110",
+  "department": ""
+}
+
+########################
+### Test 12: POST - Duplicate Email (should fail with 400)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Duplicate",
+  "email": "john.doe@techhive.com",
+  "phoneNumber": "555-0111",
+  "department": "Engineering"
+}
+
+########################
+### Test 13: PUT - Update valid user (should succeed)
+########################
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Updated",
+  "email": "john.updated@techhive.com",
+  "phoneNumber": "555-9999",
+  "department": "IT"
+}
+
+########################
+### Test 14: PUT - Update with invalid ID (should return 404)
+########################
+PUT {{baseUrl}}/api/users/999
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "test@techhive.com",
+  "phoneNumber": "555-0112",
+  "department": "Testing"
+}
+
+########################
+### Test 15: PUT - Update with negative ID (should return 400)
+########################
+PUT {{baseUrl}}/api/users/-1
+Content-Type: application/json
+
+{
+  "firstName": "Test",
+  "lastName": "User",
+  "email": "test@techhive.com",
+  "phoneNumber": "555-0113",
+  "department": "Testing"
+}
+
+########################
+### Test 16: PUT - Update with missing email (should fail with 400)
+########################
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "",
+  "phoneNumber": "555-0101",
+  "department": "Engineering"
+}
+
+########################
+### Test 17: DELETE - Delete valid user (should return 204)
+########################
+DELETE {{baseUrl}}/api/users/2
+Content-Type: application/json
+
+########################
+### Test 18: DELETE - Delete non-existent user (should return 404)
+########################
+DELETE {{baseUrl}}/api/users/999
+Content-Type: application/json
+
+########################
+### Test 19: DELETE - Delete with negative ID (should return 400)
+########################
+DELETE {{baseUrl}}/api/users/-1
+Content-Type: application/json

@@ -1,0 +1,109 @@
+########################
+### Test Base URL
+########################
+@baseUrl = http://localhost:5019
+
+########################
+### Test 1: Health Check (no authentication required)
+########################
+GET {{baseUrl}}/health
+Content-Type: application/json
+
+########################
+### Test 2: GET users without Authorization header (should return 401)
+########################
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+
+########################
+### Test 3: GET users with invalid token (should return 401)
+########################
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer invalid-token-xyz
+
+########################
+### Test 4: GET users with valid token (should return 200)
+########################
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer token-12345
+
+########################
+### Test 5: GET specific user with valid token (should return user data)
+########################
+GET {{baseUrl}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer token-12345
+
+########################
+### Test 6: GET non-existent user with valid token (should return 404)
+########################
+GET {{baseUrl}}/api/users/999
+Content-Type: application/json
+Authorization: Bearer token-12345
+
+########################
+### Test 7: POST new user with valid token
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer token-12345
+
+{
+  "firstName": "Middleware",
+  "lastName": "Tester",
+  "email": "middleware.tester@techhive.com",
+  "phoneNumber": "555-0150",
+  "department": "Testing"
+}
+
+########################
+### Test 8: POST new user without token (should return 401)
+########################
+POST {{baseUrl}}/api/users
+Content-Type: application/json
+
+{
+  "firstName": "Invalid",
+  "lastName": "Request",
+  "email": "invalid.request@techhive.com",
+  "phoneNumber": "555-0151",
+  "department": "Testing"
+}
+
+########################
+### Test 9: PUT update user with valid token
+########################
+PUT {{baseUrl}}/api/users/1
+Content-Type: application/json
+Authorization: Bearer token-12345
+
+{
+  "firstName": "John",
+  "lastName": "Updated",
+  "email": "john.updated@techhive.com",
+  "phoneNumber": "555-9999",
+  "department": "Management"
+}
+
+########################
+### Test 10: DELETE user with valid token
+########################
+DELETE {{baseUrl}}/api/users/3
+Content-Type: application/json
+Authorization: Bearer token-12345
+
+########################
+### Test 11: Test alternative valid token
+########################
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer demo-token-xyz
+
+########################
+### Test 12: Test with JWT token
+########################
+GET {{baseUrl}}/api/users
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
